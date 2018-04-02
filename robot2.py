@@ -1,5 +1,7 @@
 import RPi.GPIO as gpio
+import pygame
 import time
+import sys
 
 def init():
     gpio.setmode(gpio.BOARD)
@@ -60,10 +62,37 @@ def pivot_right(tf):
     gpio.output(13,False)
     gpio.output(15,True)
     time.sleep(tf)
-    
-forward(1)
-reverse(1)
-turn_left(1)
-turn_right(1)
-pivot_left(1)
-pivot_right(1)
+    gpio.cleanup()
+
+pygame.init()
+size = (300,400)
+pygame.display.set_mode(size)
+pygame.display.set_caption("CAR")
+carryOn = True
+
+while carryOn:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            carryOn = False
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        forward(0.5)
+    if keys[pygame.K_DOWN]:
+        reverse(0.5)
+    if keys[pygame.K_LEFT]:
+        turn_left(0.5)
+    if keys[pygame.K_RIGHT]:
+        turn_right(0.5)
+    if keys[pygame.K_p]:
+        pivot_left(0.5)
+    if keys[pygame.K_q]:
+        pivot_right(0.5)
+
+pygame.quit()
+#forward(1)
+#reverse(1)
+#turn_left(1)
+#turn_right(1)
+#pivot_left(1)
+#pivot_right(1)
+
